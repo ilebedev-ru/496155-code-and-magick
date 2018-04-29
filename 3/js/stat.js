@@ -4,13 +4,11 @@ var CLOUD_WIDTH = 420;
 var CLOUD_HEIGHT = 270;
 var CLOUD_X = 100;
 var CLOUD_Y = 10;
-var GAP_BAR = 50;
 var GAP = 10;
-var TEXT_HEIGHT = 16;
+var FONT_GAP = 15;
+var BAR_HEIGHT = 150;
 var BAR_WIDTH = 40;
-var HSL_HUE = 240;
-var FONT_COLOR = '#000';
-var BAR_MAX_HEIGHT = 150;
+var BAR_GAP = 50;
 
 var renderCloud = function (ctx, x, y, color) {
   ctx.fillStyle = color;
@@ -19,45 +17,38 @@ var renderCloud = function (ctx, x, y, color) {
 
 var getMaxElement = function (arr) {
   var maxElement = arr[0];
-  for (var i = 1; i < arr.length; i++) {
+
+  for (var i = 0; i < arr.length; i++) {
     if (arr[i] > maxElement) {
       maxElement = arr[i];
     }
   }
+
   return maxElement;
 };
 
-var setBarColor = function (playerName) {
-  if (playerName === 'Вы') {
-    return 'rgba(255, 0, 0, 1)'
-  }
-  return 'hsl(' + HSL_HUE + ', ' + (Math.floor(Math.random() * 99) + 1) + '%, 60%)'
-}
-
-
-window.renderStatistics = function (ctx, players, times) {
+window.renderStatistics = function (ctx, names, times) {
   renderCloud(ctx, CLOUD_X + GAP, CLOUD_Y + GAP, 'rgba(0, 0, 0, 0.7)');
   renderCloud(ctx, CLOUD_X, CLOUD_Y, '#fff');
 
-  ctx.fillStyle = FONT_COLOR;
-  ctx.font = '16px PT Mono';
-  ctx.textBaseline = "top";
-  ctx.fillText("Ура вы победили!", CLOUD_X + GAP_BAR, CLOUD_Y + GAP);
-  ctx.fillText("Список результатов:", CLOUD_X + GAP_BAR, CLOUD_Y + GAP + TEXT_HEIGHT + GAP);
+  ctx.fillStyle = '#000';
+  ctx.fillText('Ура вы победили!', 230, 40);
+  ctx.fillText('Список результатов:', 220, 60);
+
   var maxTime = getMaxElement(times);
 
-  for (var i = 0; i < players.length; i++) {
-    var stringHight = TEXT_HEIGHT + GAP;
-    var calcBarHeight = Math.floor((BAR_MAX_HEIGHT / maxTime) * times[i]);
-    var columnX = CLOUD_X + GAP_BAR + (BAR_WIDTH + GAP_BAR) * i;
-    var textY = CLOUD_Y + GAP + stringHight * 2 + BAR_MAX_HEIGHT - calcBarHeight;
-    var rectY = CLOUD_Y + stringHight * 3 + BAR_MAX_HEIGHT - calcBarHeight;
-    var usernameY = CLOUD_Y + GAP + stringHight * 3 + BAR_MAX_HEIGHT;
-    ctx.fillStyle = FONT_COLOR;
-    ctx.fillText(Math.floor(times[i]), columnX, textY);
-    ctx.fillStyle = setBarColor(players[i]);
-    ctx.fillRect(columnX, rectY, BAR_WIDTH, calcBarHeight);
-    ctx.fillStyle = FONT_COLOR;
-    ctx.fillText(players[i], columnX, usernameY);
+  for (var i = 0; i < names.length; i++) {
+    ctx.fillStyle = '#000';
+    ctx.font = '16px PT Mono';
+    ctx.fillText(names[i], CLOUD_X + BAR_GAP + ((BAR_GAP + BAR_WIDTH) * i), CLOUD_HEIGHT - GAP);
+    ctx.fillText(Math.round(times[i]), CLOUD_X + BAR_GAP + ((BAR_GAP + BAR_WIDTH) * i), CLOUD_HEIGHT - FONT_GAP * 2 - ((BAR_HEIGHT * times[i]) / maxTime));
+
+    if (names[i] === 'Вы') {
+      ctx.fillStyle = 'rgba(255, 0, 0, 1)';
+    } else {
+      ctx.fillStyle = 'rgba(0, 0, 255,' + Math.random() + ')';
+    }
+
+    ctx.fillRect(CLOUD_X + BAR_GAP + ((BAR_GAP + BAR_WIDTH) * i), CLOUD_HEIGHT - (GAP + FONT_GAP), BAR_WIDTH, -(BAR_HEIGHT * times[i]) / maxTime);
   }
 };

@@ -13,7 +13,7 @@
 <header>
   <svg style="display: none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 62
         86">
-    <g id="wizard">
+    <g id="wizard">'
       <g id="wizard-coat">
         <polygon points="19 67 19 59 14 59 14 82 9 82 9 86 23 86 23 67 19 67"/>
         <polygon points="19 59 19 67 23 67 23 86 48 86 48 54 19 54 19 59"/>
@@ -181,25 +181,30 @@
     <p class="setup-similar-label">Петр Петров</p>
   </div>
 </template>
-
-<!-- скрипт с объявляем переменных и функций поведения игры -->
 <script>
   var fireballSize = 22;
-  var getFireballSpeed = function (left) {
-    return left ? 5 : 2;
-  };
   var wizardSpeed = 3;
   var wizardWidth = 70;
+
+  var getFireballSpeed = function (left) {
+    return left ? 5 : 2;
+  }
+
   var getWizardHeight = function () {
-    return 1.337 * wizardWidth;
-  };
+    var getWizardHeightCount =  wizardWidth * 1.337;
+    return getWizardHeightCount;
+  }
 
   var getWizardX = function (width) {
-    return width / 2 - wizardWidth / 2;
-  };
+    var gerWizardXCount = width / 2 - wizardWidth / 2;
+    return gerWizardXCount;
+    }
+
   var getWizardY = function (height) {
-    return height / 3 - getWizardHeight() ;
-  };
+    var getWizardYCount = height / 3 - getWizardHeight();
+    return getWizardYCount;
+  }
+
 </script>
 <script src="js/stat.js"></script>
 <script src="js/game.js"></script>
