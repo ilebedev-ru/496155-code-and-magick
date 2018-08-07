@@ -5,6 +5,9 @@ var setupOpenButton = document.querySelector('.setup-open');
 var setupCloseButton = setup.querySelector('.setup-close');
 var setupSimilar = document.querySelector('.setup-similar');
 var setupUserName = document.querySelector('.setup-user-name');
+var wizardCoat = setup.querySelector('.wizard-coat');
+var wizardEyes = setup.querySelector('.wizard-eyes');
+var fireball = setup.querySelector('.setup-fireball-wrap');
 
 var ESC_KEYCODE = 27;
 var ENTER_KEYCODE = 13;
@@ -21,20 +24,26 @@ var coatColor = [
 ];
 
 var eyesColor = ['black', 'red', 'blue', 'yellow', 'green'];
+var fireballColors = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
 
 var wizards = [WIZARD_NAMES, WIZARD_SURNAMES, coatColor, eyesColor];
 
 var similarWizardTemplate = document.querySelector('#similar-wizard-template').content;
 var similarListElement = document.querySelector('.setup-similar-list');
 
+// функция для поиска случайного значения
+function getRandom(arr) {
+  var rand = Math.floor(Math.random() * arr.length);
+  return rand;
+}
 
-//функция закрытия окна
+// функция закрытия окна
 var closePopup = function() {
   setup.classList.add('hidden');
   document.removeEventListener('keydown', closePopupEsc);
 }
 
-//проверяем наличие фокуса у поля имени
+// проверяем наличие фокуса у поля имени
 var onFocus = false;
 setupUserName.addEventListener('focus', function() {
   onFocus = true;
@@ -43,7 +52,7 @@ setupUserName.addEventListener('blur', function() {
   onFocus = false;
 });
 
-//функция закрытия окна по ESC, не работает, если поле имени имеет фокус
+// функция закрытия окна по ESC, не работает, если поле имени имеет фокус
 var closePopupEsc = function () {
   if (event.keyCode === ESC_KEYCODE && !onFocus) {
       closePopup();
@@ -56,31 +65,45 @@ var openPopup = function() {
   document.addEventListener('keydown', closePopupEsc);
 }
 
-//открытие по ENTER
+// открытие по ENTER
 var openPopupEnter = function() {
   if (event.keyCode === ENTER_KEYCODE) {
       openPopup();
     }
 }
 
-//закрытие по Enter
+// закрытие по Enter
 var closePopupEnter = function() {
   if (event.keyCode === ENTER_KEYCODE) {
       closePopup();
     }
 }
 
-//навешиваем обработчики
+// навешиваем обработчики
 setupOpenButton.addEventListener('click', openPopup);
 setupOpenButton.addEventListener('keydown', openPopupEnter);
 setupCloseButton.addEventListener('click', closePopup);
 setupCloseButton.addEventListener('keydown', closePopupEnter);
 
-// функция для поиска случайного значения
-function getRandom(arr) {
-  var rand = Math.floor(Math.random() * arr.length);
-  return rand;
+// функция смены цвета мантии на случайный
+var changeCoatColor = function() {
+  wizardCoat.style.fill = coatColor[getRandom(coatColor)];
 }
+// функция смены цвета глаз на случайный
+var changeEyesColor = function() {
+  wizardEyes.style.fill = eyesColor[getRandom(eyesColor)];
+}
+// функция смены цвета фаербола на случайный
+var changeFireballColor = function() {
+  console.log("клик!")
+  fireball.style.background = fireballColors[getRandom(fireballColors)];
+}
+
+// обработчики для смены цветов
+wizardCoat.addEventListener('click', changeCoatColor);
+wizardEyes.addEventListener('click', changeEyesColor);
+fireball.addEventListener('click', changeFireballColor);
+
 
 // функция генерации нового волшебника
 var renderWizards = function (wizard) {
@@ -101,15 +124,3 @@ similarListElement.appendChild(fragment);
 
 setupSimilar.classList.remove('hidden');
 
-
-// Добавить обработчики для альтернативного ввода с клавиатуры keydown для кнопок
-// открытия/закрытия диалога настройки персонажа:
-// 3. Когда иконка пользователя в фокусе .setup-open-icon, то окно настройки персонажа должно
-// открываться по нажатию кнопки ENTER
-// Не забудьте добавить tabindex="0" для иконки пользователя, чтобы она фокусировалась
-// 4. Когда окно настройки персонажа открыто, нажатие на клавишу ESC должно закрывать диалог
-// Если фокус находится на форме ввода имени, то окно закрываться не должно
-// 5. Если окно открыто и фокус находится на кнопке закрытия окна, то нажатие клавиши ENTER должно
-// приводить к закрытию диалога 6. Если диалог открыт, нажатие на кнопку «Сохранить» приводит
-// к отправке формы 7. Если диалог открыт и фокус находится на кнопке «Сохранить», нажатие на ENTER
-// приводит к отправке формы
