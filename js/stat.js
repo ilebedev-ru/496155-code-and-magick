@@ -10,10 +10,9 @@ window.renderStatistics = function (ctx, names, times) {
   ctx.font = '16px PT Mono';
   ctx.fillText('Ура вы победили!', 120, 40);
 
+  // функция поиска максимального значения
   function getMaxTime(allTimes) {
-
     var max = -1;
-
     for (var i = 0; i < allTimes.length; i++) {
       var time = allTimes[i];
       if (time > max) {
@@ -27,13 +26,20 @@ window.renderStatistics = function (ctx, names, times) {
 
   // функция поиска индекса определенного значения в массиве
   function findIndex(array, value) {
-    for (var i = 0; i < array.length; i++) {
-      if (array[i] === value) { return i;
+    // проверка, поддерживается ли браузером indexOf
+    if ([].indexOf) {
+      return array.indexOf(value);
+    } else {
+      for (var i = 0; i < array.length; i++) {
+        if (array[i] === value) {
+          return i;
+        }
       }
-    return -1;
+      return -1;
     }
   }
 
+  // находим индекс максимального значения
   var maxIndex = findIndex(times, max);
 
   var columnWidth = 40;
@@ -41,12 +47,12 @@ window.renderStatistics = function (ctx, names, times) {
   var step = maxColumnHeigth / (max - 0);
   var indent = 50;
 
+  // находим индекс нашего значения
   var yourIndex = findIndex(names, 'Вы');
 
-  // ctx.fillRect(x, y, width, height);
+  ctx.fillText('Худшее время: ' + Math.round(max) + ' мс у игрока ' + names[maxIndex], 120, 60, 420);
 
-  ctx.fillText('Худшее время: ' + max + ' мс у игрока ' + names[maxIndex], 120, 60, 420);
-
+  // цикл, который отрисовывает столбики
   for (var i = 0; i < times.length; i++) {
     ctx.fillStyle = '#000';
     ctx.fillText(names[i], 120 + (indent * i) + (columnWidth * i), 250 - times[i] * step, columnWidth);
@@ -56,5 +62,5 @@ window.renderStatistics = function (ctx, names, times) {
       ctx.fillStyle = 'rgb(80, 66, 244)';
     }
     ctx.fillRect(120 + (indent * i) + (columnWidth * i), 270 - times[i] * step, columnWidth, times[i] * step);
-  };
+  }
 };

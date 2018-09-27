@@ -38,46 +38,46 @@ function getRandom(arr) {
 }
 
 // функция закрытия окна
-var closePopup = function() {
+var closePopup = function () {
   setup.classList.add('hidden');
   document.removeEventListener('keydown', closePopupEsc);
-}
+};
 
 // проверяем наличие фокуса у поля имени
 var onFocus = false;
-setupUserName.addEventListener('focus', function() {
+setupUserName.addEventListener('focus', function () {
   onFocus = true;
 });
-setupUserName.addEventListener('blur', function() {
+setupUserName.addEventListener('blur', function () {
   onFocus = false;
 });
 
 // функция закрытия окна по ESC, не работает, если поле имени имеет фокус
 var closePopupEsc = function () {
   if (event.keyCode === ESC_KEYCODE && !onFocus) {
-      closePopup();
-    }
-}
+    closePopup();
+  }
+};
 
-//функция для открытия окна
-var openPopup = function() {
+// функция для открытия окна
+var openPopup = function () {
   setup.classList.remove('hidden');
   document.addEventListener('keydown', closePopupEsc);
-}
+};
 
 // открытие по ENTER
-var openPopupEnter = function() {
+var openPopupEnter = function () {
   if (event.keyCode === ENTER_KEYCODE) {
-      openPopup();
-    }
-}
+    openPopup();
+  }
+};
 
 // закрытие по Enter
-var closePopupEnter = function() {
+var closePopupEnter = function () {
   if (event.keyCode === ENTER_KEYCODE) {
-      closePopup();
-    }
-}
+    closePopup();
+  }
+};
 
 // навешиваем обработчики
 setupOpenButton.addEventListener('click', openPopup);
@@ -86,18 +86,17 @@ setupCloseButton.addEventListener('click', closePopup);
 setupCloseButton.addEventListener('keydown', closePopupEnter);
 
 // функция смены цвета мантии на случайный
-var changeCoatColor = function() {
+var changeCoatColor = function () {
   wizardCoat.style.fill = coatColor[getRandom(coatColor)];
-}
+};
 // функция смены цвета глаз на случайный
-var changeEyesColor = function() {
+var changeEyesColor = function () {
   wizardEyes.style.fill = eyesColor[getRandom(eyesColor)];
-}
+};
 // функция смены цвета фаербола на случайный
-var changeFireballColor = function() {
-  console.log("клик!")
+var changeFireballColor = function () {
   fireball.style.background = fireballColors[getRandom(fireballColors)];
-}
+};
 
 // обработчики для смены цветов
 wizardCoat.addEventListener('click', changeCoatColor);
